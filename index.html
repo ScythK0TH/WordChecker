@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text Counter</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f7fc;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      .container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 600px;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        transition: color 0.3s;
+      }
+
+      textarea {
+        width: 100%;
+        height: 150px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        resize: none;
+        margin-bottom: 20px;
+      }
+
+      .count-container {
+        display: flex;
+        justify-content: space-between;
+        font-size: 16px;
+        color: #555;
+      }
+
+      .count-container span {
+        font-weight: bold;
+      }
+
+      /* Toggle Switch */
+      .theme-toggle-container {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .theme-toggle {
+        position: relative;
+        width: 50px;
+        height: 25px;
+      }
+
+      .theme-toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 4px;
+        bottom: 3.5px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: #007bff;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(24px);
+      }
+
+      /* Dark Mode Styles */
+      body.dark-mode {
+        background-color: #121212;
+        color: #ffffff;
+      }
+
+      .container.dark-mode {
+        background-color: #2c2c2c;
+        box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+      }
+
+      h1.dark-mode {
+        color: #fff;
+      }
+
+      textarea.dark-mode {
+        background-color: #444444;
+        color: #ffffff;
+        border-color: #555555;
+      }
+
+      .count-container.dark-mode {
+        color: #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="theme-toggle-container">
+      <label class="theme-toggle">
+        <input type="checkbox" id="themeSwitcher" onclick="toggleTheme()" />
+        <span class="slider"></span>
+      </label>
+      <span id="themeText">Light Mode</span>
+    </div>
+
+    <div class="container">
+      <h1 id="pageTitle">Text Counter</h1>
+      <textarea
+        id="textInput"
+        placeholder="ใส่ข้อความที่นี่..."
+        oninput="updateCounts()"
+      ></textarea>
+      <div class="count-container">
+        <span id="letterCount">Letter Count: 0</span>
+        <span id="wordCount">Word Count: 0</span>
+      </div>
+    </div>
+
+    <script>
+      function updateCounts() {
+        const text = document.getElementById("textInput").value;
+
+        // Letter count
+        const letterCount = text.replace(/\s+/g, "").length;
+
+        // Word count
+        const wordCount = text
+          .trim()
+          .split(/\s+/)
+          .filter((word) => word.length > 0).length;
+
+        // Update the counts
+        document.getElementById(
+          "letterCount"
+        ).textContent = `Letter Count: ${letterCount}`;
+        document.getElementById(
+          "wordCount"
+        ).textContent = `Word Count: ${wordCount}`;
+      }
+
+      function toggleTheme() {
+        const body = document.body;
+        const container = document.querySelector(".container");
+        const textarea = document.querySelector("textarea");
+        const countContainer = document.querySelector(".count-container");
+        const themeText = document.getElementById("themeText");
+        const pageTitle = document.getElementById("pageTitle");
+
+        body.classList.toggle("dark-mode");
+        container.classList.toggle("dark-mode");
+        textarea.classList.toggle("dark-mode");
+        countContainer.classList.toggle("dark-mode");
+        pageTitle.classList.toggle("dark-mode"); // เพิ่มการเปลี่ยนธีมให้กับ h1
+
+        if (body.classList.contains("dark-mode")) {
+          themeText.textContent = "Dark Mode";
+          pageTitle.textContent = "Text Counter";
+        } else {
+          themeText.textContent = "Light Mode";
+          pageTitle.textContent = "Text Counter";
+        }
+      }
+    </script>
+  </body>
+</html>
